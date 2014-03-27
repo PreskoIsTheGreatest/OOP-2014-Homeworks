@@ -1,0 +1,48 @@
+# OOP 2014
+# Homework 1
+### Due date: Thursday, March 27, 2014, 23:59:59
+---
+
+## Some organizational details
+You’ll receive 4 homework throughout the semester. We expect you to submit a **.zip** archive (not a .rar, not a .7zip, not a .tgz). The archive should meet the following criteria:
+1. _Naming convention_: hw_&lt;homework\_number&gt;_.group_&lt;group\_number&gt;_._&lt;fn&gt;_.zip where:
+  -	&lt;homework_number&gt; is the number of the current homework
+  -	&lt;group_number&gt; is the number of your group ([O, rly?][1])
+  -	&lt;fn&gt; is your faculty number
+
+That’s ok: hw3.group2.66666.zip  
+That’s not: hw3.g2.66666.zip, hw3.group2.fn66666.zip, hw3.group2.66666.rar
+2.	_Contents_: you should only submit **source and header files (.h, .cpp)** and NOTHING else, no folders, no executables, no .dll-s, no .lib-s, no .o-s, nothing else
+                                                                           
+Failing to meet any of the above will get you **0 points**.
+Now for the interesting stuff.
+
+---
+## Problem 1. Polymorphism. Virtual functions
+
+You are to implement a file system mock-up. 
+
+Implement a `Folder` class and a `File` class. `File` should be inherited by the classes `ImageFile` and`TextFile`. `ImageFile` should be inherited by `PngFile`, `JpgFile` and `BmpFile`. `TextFile` should be inherited by `PdfFile`, `DocFile` and `TxtFile`.
+
+The `File` class should have a constructor with its name as parameter i.e. `File::File(std::string& name)`. It should also contain a method `string GetName() const` which returns the aforementioned.
+
+The `File` class must contain a virtual (bonus points for making it abstract) method named `void Open() const`. This method should only print “Opening a &lt;type&gt;” to the console, where &lt;type&gt; is the file’s type (i.e. a `PdfFile` should print “Opening a pdf”).
+
+The `ImageFile` class should have a constructor that accepts the image’s name, width and height as parameters i.e. `ImageFile::ImageFile(std::string& name, int width, int height)`. The `ImageFile` class must contain a virtual `int* ImageFile::GetData() const` method that returns an array of integers (actual image files often contain such arrays). The size of the array must be exactly _width * height_.
+
+All `ImageFile` subclasses (Png, Jpg, Bmp) should override the `GetData` method in the following manner:
+-	A PngFile’s GetData returns an array full of zeros
+-	A JpgFile’s GetData returns an array full of ones
+-	A BmpFile’s GetData returns an array full of twos
+
+The `TextFile` class must contain the pair of methods `void PrintContent() const` and `void SetContent(std::string& content)`. The first prints the file content that was set using `SetContent`. If the no content has been set, it should print an empty string.
+
+A `Folder` should hold pointers to files it contains  (using array / `std::vector`). Those pointers can be accessed using `File** GetFiles() const` / `std::vector<File*>& GetFiles() const`. It should also hold pointers to the folder it contains that are accessible using `Folder** GetFolders const` / `std::vector<Folder*>& GetFolders() const`.
+
+The `Folder` class should also contain the following methods:
+- `void AddFile(File* file)` - adds the specified file
+- `void DeleteFile(File* file)` - deletes the specified file
+- `void MoveFileTo(File* file, Folder* newFolder)` - moves the file from the current folder to the `newFolder` 
+
+
+[1]: http://img3.wikia.nocookie.net/__cb20070106155834/uncyclopedia/images/archive/1/15/20070526081818!CaptainobviousChooseOption.jpg
